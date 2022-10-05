@@ -21,6 +21,15 @@ public static class ProblemaDetalhadoExtensao
         dictionary.Add("Error", erro.Select(x => x.Description).ToArray());
 
         return dictionary;
-
     }
+
+    public static Dictionary<string, string[]> ConverterParaProblemaDetalhado(this string[] erro)
+    {
+        var dictionary = new Dictionary<string, string[]>();
+        dictionary.Add("Error", erro);
+
+        return dictionary;
+    }
+
+
 }

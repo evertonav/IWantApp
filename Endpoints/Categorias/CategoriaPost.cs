@@ -1,4 +1,5 @@
-﻿using WantApp.Dominio.Produtos;
+﻿using Microsoft.AspNetCore.Authorization;
+using WantApp.Dominio.Produtos;
 using WantApp.Infra.Dados;
 
 namespace WantApp.Endpoints.Categorias;
@@ -9,6 +10,7 @@ public class CategoriaPost
     public static string[] Metodos => new string[] {HttpMethod.Post.ToString()};
     public static Delegate Handle => Action;
 
+    [Authorize]
     public static IResult Action(CategoriaRequest categoriaRequest, ApplicationDbContext context)
     {
         Categoria categoria = new Categoria(categoriaRequest.Nome, "Everton", "Everton");

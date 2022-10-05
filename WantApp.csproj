@@ -7,7 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="WantApp\**" />
+    <Content Remove="WantApp\**" />
+    <EmbeddedResource Remove="WantApp\**" />
+    <None Remove="WantApp\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Flunt" Version="2.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.9">
@@ -20,10 +29,6 @@
 
   <ItemGroup>
     <EditorConfigFiles Remove="C:\WantApp\WantApp\WantApp\.editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="C:\WantApp\WantApp\WantApp\.editorconfig" />
   </ItemGroup>
 
 </Project>
