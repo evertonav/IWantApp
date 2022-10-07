@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 using WantApp.Dominio.Produtos;
 using WantApp.Infra.Dados;
 
@@ -11,9 +12,10 @@ public class CategoriaPost
     public static Delegate Handle => Action;
 
     [Authorize]
-    public static IResult Action(CategoriaRequest categoriaRequest, ApplicationDbContext context)
+    public static IResult Action(CategoriaRequest categoriaRequest, HttpContext http, ApplicationDbContext context)
     {
-        Categoria categoria = new Categoria(categoriaRequest.Nome, "Everton", "Everton");
+        var usuarioId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        Categoria categoria = new Categoria(categoriaRequest.Nome, usuarioId, usuarioId);
 
         if (!categoria.IsValid)
         {      

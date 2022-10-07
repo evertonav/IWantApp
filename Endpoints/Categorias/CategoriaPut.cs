@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using WantApp.Dominio.Produtos;
 using WantApp.Infra.Dados;
 
@@ -10,9 +11,9 @@ public class CategoriaPut
     public static string[] Metodos => new string[] {HttpMethod.Put.ToString()};
     public static Delegate Handle => Action;
 
-    public static IResult Action([FromRoute] Guid Id, CategoriaRequest categoriaRequest, ApplicationDbContext context)
-    {
-
+    public static IResult Action([FromRoute] Guid Id,
+        HttpContext http, CategoriaRequest categoriaRequest, ApplicationDbContext context)
+    {        
         Categoria categoria = context.Categorias.FirstOrDefault(x => x.Id == Id);
 
         if (categoria == null)
@@ -20,7 +21,9 @@ public class CategoriaPut
             return Results.NotFound();
         }
 
-        categoria.EditarInformacoes(categoriaRequest.Nome, categoriaRequest.Ativo);        
+        string usuarioId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
+        categoria.EditarInformacoes(categoriaRequest.Nome, categoriaRequest.Ativo, usuarioId);        
 
         if (!categoria.IsValid)
         {

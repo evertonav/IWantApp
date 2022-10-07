@@ -34,7 +34,7 @@ builder.Services.AddAuthorization(opcoes =>
 
     opcoes.AddPolicy("Empregado005Politica", p =>
     {
-        p.RequireAuthenticatedUser().RequireClaim("CodigoEmpregado", "3");
+        p.RequireAuthenticatedUser().RequireClaim("CodigoEmpregado", "2");
     });
 });
 
@@ -50,6 +50,7 @@ builder.Services.AddAuthentication(x =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
+        ClockSkew = TimeSpan.Zero,
         ValidIssuer = builder.Configuration["JwtBearerTokenSettings:Issuer"],
         ValidAudience = builder.Configuration["JwtBearerTokenSettings:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtBearerTokenSettings:SecretKey"]))

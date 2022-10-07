@@ -36,10 +36,11 @@ public class TokenPost
         var tokenDescriptografar = new SecurityTokenDescriptor
         {
             Subject = subject,
-            SigningCredentials = 
+            SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
             Audience = configuracao["JwtBearerTokenSettings:Audience"],
-            Issuer = configuracao["JwtBearerTokenSettings:Issuer"]
+            Issuer = configuracao["JwtBearerTokenSettings:Issuer"],
+            Expires = DateTime.UtcNow.AddMinutes(30)
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();

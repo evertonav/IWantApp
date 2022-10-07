@@ -27,10 +27,12 @@ public class Categoria : Entidade
 		AddNotifications(contrato);
 	}
 
-	public void EditarInformacoes(string nome, bool ativo)
+	public void EditarInformacoes(string nome, bool ativo, string editadoPor)
 	{
 		Ativo = ativo;
 		Nome = nome;
+		EditadoPor = editadoPor;
+		//DataEdicao = DateTime.Now; Verificar pq da erro de data
 
 		Validar();
     }

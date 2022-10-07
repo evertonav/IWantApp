@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using WantApp.Dominio.Produtos;
 using WantApp.Infra.Dados;
+using static System.Net.WebRequestMethods;
 
 namespace WantApp.Endpoints.Empregados;
 
@@ -11,7 +12,8 @@ public class EmpregadoPost
     public static string[] Metodos => new string[] {HttpMethod.Post.ToString()};
     public static Delegate Handle => Action;
 
-    public static IResult Action(EmpregadoRequest empregadoRequest, UserManager<IdentityUser> userManager)
+    public static IResult Action(EmpregadoRequest empregadoRequest, 
+        HttpContext http, UserManager<IdentityUser> userManager)
     {
         IdentityUser usuario = new IdentityUser() 
             { 
@@ -24,10 +26,13 @@ public class EmpregadoPost
         if (!resultadoCriacao.Succeeded)
             return Results.ValidationProblem(resultadoCriacao.Errors.ConverterParaProblemaDetalhado());
 
+        var usuarioId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
         List<Claim> claims = new List<Claim>()
         {
             new Claim("CodigoEmpregado", empregadoRequest.CodigoEmpregado),
-            new Claim("Nome", empregadoRequest.Nome)
+            new Claim("Nome", empregadoRequest.Nome),
+            new Claim("CriadoPor", usuarioId)
         };
 
         var claimResultado = userManager.AddClaimsAsync(usuario, claims).Result;
