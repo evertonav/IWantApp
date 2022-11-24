@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using WantApp.Dominio.Produtos;
 using WantApp.Infra.Dados;
+using WantApp.Servicos;
 
 namespace WantApp.Endpoints.Categorias;
 
@@ -12,18 +13,19 @@ public class CategoriaPost
     public static Delegate Handle => Action;
 
     [Authorize]
-    public static IResult Action(CategoriaRequest categoriaRequest, HttpContext http, ApplicationDbContext context)
+    public static async Task<IResult> Action(CategoriaRequest categoriaRequest, 
+        HttpContext http, ApplicationDbContext context, CategoriaServico categoriaServico)
     {
+
         var usuarioId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-        Categoria categoria = new Categoria(categoriaRequest.Nome, usuarioId, usuarioId);
+
+        Categoria categoria = await categoriaServico.AdicionarAsync(usuarioId,
+                                                                    categoriaRequest);        
 
         if (!categoria.IsValid)
         {      
             return Results.ValidationProblem(categoria.Notifications.ConverterParaProblemaDetalhado());
-        }
-
-        context.Categorias.Add(categoria);
-        context.SaveChanges();
+        }        
 
         return Results.Created($"/categorias/{categoria.Id}", categoria.Id);
     }

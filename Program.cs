@@ -1,14 +1,35 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Npgsql;
+using NpgsqlTypes;
+using Serilog;
+using Serilog.Sinks.PeriodicBatching;
+using Serilog.Sinks.PostgreSQL;
 using System.Text;
+using System.Text.Json;
 using WantApp.Endpoints.Categorias;
+using WantApp.Endpoints.Clientes;
 using WantApp.Endpoints.Empregados;
+using WantApp.Endpoints.Produtos;
 using WantApp.Endpoints.Seguranca;
 using WantApp.Infra.Dados;
+using WantApp.Servicos;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.UseSerilog((context, configuracao) =>
+{
+    configuracao
+        .WriteTo.Console()       
+        .WriteTo.PostgreSQL(
+            context.Configuration["ConnectionStrings:WantDb"],
+            "LogAPI",
+            needAutoCreateTable: true
+        );
+});
 
 builder.Services.AddNpgsql<ApplicationDbContext>(builder.Configuration["ConnectionStrings:WantDb"]);
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(opcoes =>
@@ -59,6 +80,8 @@ builder.Services.AddAuthentication(x =>
 );
 
 builder.Services.AddScoped<BuscarTodosUsuariosComClaimName>();
+builder.Services.AddScoped<CategoriaServico>();
+builder.Services.AddScoped<UsuarioServico>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -85,7 +108,28 @@ app.MapMethods(EmpregadoPost.Template, EmpregadoPost.Metodos, EmpregadoPost.Acti
 app.MapMethods(EmpregadoGetAll.Template, EmpregadoGetAll.Metodos, EmpregadoGetAll.Action);
 //app.MapMethods(EmpregadoGetAllMenosPerfomatico.Template, EmpregadoGetAllMenosPerfomatico.Metodos, EmpregadoGetAllMenosPerfomatico.Action);
 app.MapMethods(TokenPost.Template, TokenPost.Metodos, TokenPost.Action);
+app.MapMethods(ProdutoPost.Template, ProdutoPost.Metodos, ProdutoPost.Action);
+app.MapMethods(ProdutoGetTodos.Template, ProdutoGetTodos.Metodos, ProdutoGetTodos.Action);
+app.MapMethods(ProdutoGetPeloId.Template, ProdutoGetPeloId.Metodos, ProdutoGetPeloId.Action);
+app.MapMethods(ProdutoGetVitrine.Template, ProdutoGetVitrine.Metodos, ProdutoGetVitrine.Action);
+app.MapMethods(ClientesPost.Template, ClientesPost.Metodos, ClientesPost.Action);
+app.MapMethods(ClientesGet.Template, ClientesGet.Metodos, ClientesGet.Action);
 
+app.UseExceptionHandler("/erro");
+app.Map("/erro", (HttpContext http) => {
+    var erro = http.Features?.Get<IExceptionHandlerFeature>()?.Error;
+
+    if (erro != null)
+    {
+        if (erro is NpgsqlException)
+            return Results.Problem(title: "Database fora de serviço!", statusCode: 500);
+        else if (erro is BadHttpRequestException)
+            return Results.Problem(title: "Erro de conversão de dados. Verifique todas informações enviadas!");
+        
+    }
+
+    return Results.Problem(title: "Um erro ocorreu!", statusCode: 500);
+});
 
 app.Run();
 

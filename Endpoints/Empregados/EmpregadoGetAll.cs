@@ -11,7 +11,7 @@ public class EmpregadoGetAll
     public static Delegate Handle => Action;
 
     [Authorize(Policy = "Empregado005Politica")]
-    public static IResult Action(int? pagina, int? linhas, BuscarTodosUsuariosComClaimName buscarTodosUsuariosComClaimName)
+    public static async Task<IResult> Action(int? pagina, int? linhas, BuscarTodosUsuariosComClaimName buscarTodosUsuariosComClaimName)
     {
         List<string> erros = new List<string>();
 
@@ -25,6 +25,6 @@ public class EmpregadoGetAll
             return Results.ValidationProblem(erros.ToArray().ConverterParaProblemaDetalhado());
 
         //Utilizando o Dapper                  
-        return Results.Ok(buscarTodosUsuariosComClaimName.Executar(pagina.Value, linhas.Value));
+        return Results.Ok(await buscarTodosUsuariosComClaimName.Executar(pagina.Value, linhas.Value));
     }
 }

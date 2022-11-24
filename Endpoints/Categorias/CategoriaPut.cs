@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using WantApp.Dominio.Produtos;
 using WantApp.Infra.Dados;
+using WantApp.Servicos;
 
 namespace WantApp.Endpoints.Categorias;
 
@@ -12,26 +13,26 @@ public class CategoriaPut
     public static Delegate Handle => Action;
 
     public static IResult Action([FromRoute] Guid Id,
-        HttpContext http, CategoriaRequest categoriaRequest, ApplicationDbContext context)
-    {        
-        Categoria categoria = context.Categorias.FirstOrDefault(x => x.Id == Id);
+        HttpContext http, CategoriaRequest categoriaRequest, CategoriaServico categoriaServico)//ApplicationDbContext context)
+    {
+        string usuarioId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
+        Categoria categoria = categoriaServico.Atualizar(categoriaServico.BuscarPeloId(Id),
+                                                         categoriaRequest,
+                                                         usuarioId);                         
 
         if (categoria == null)
         {
             return Results.NotFound();
-        }
-
-        string usuarioId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-
-        categoria.EditarInformacoes(categoriaRequest.Nome, categoriaRequest.Ativo, usuarioId);        
+        }        
 
         if (!categoria.IsValid)
         {
             return Results.ValidationProblem(categoria.Notifications.ConverterParaProblemaDetalhado());
-        }
-        
-        context.SaveChanges();
+        }                
 
         return Results.Ok();
     }
+
+
 }

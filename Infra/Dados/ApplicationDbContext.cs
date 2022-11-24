@@ -24,7 +24,8 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 
         builder.Entity<Produto>().Property(p => p.Descricao).HasMaxLength(255);
         builder.Entity<Produto>().Property(p => p.Nome).IsRequired();
-        builder.Entity<Categoria>().Property(p => p.Nome).IsRequired();
+        builder.Entity<Produto>().Property(p => p.Preco).HasColumnType("decimal(10,2)").IsRequired();
+        builder.Entity<Categoria>().Property(p => p.Nome).IsRequired();        
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configuracao)

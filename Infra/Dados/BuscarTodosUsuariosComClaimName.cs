@@ -13,7 +13,7 @@ public class BuscarTodosUsuariosComClaimName
 		this.configuracao = configuracao;
 	}
 
-	public IEnumerable<EmpregadoResponse> Executar(int pagina, int linhas)
+	public async Task<IEnumerable<EmpregadoResponse>> Executar(int pagina, int linhas)
 	{
         NpgsqlConnection conexao = new NpgsqlConnection(configuracao["ConnectionStrings:WantDb"]);
 
@@ -25,6 +25,6 @@ public class BuscarTodosUsuariosComClaimName
           + " Order by \"ClaimValue\""
           + " LIMIT @linhas OFFSET (@pagina - 1) * @linhas";
 
-        return conexao.Query<EmpregadoResponse>(sql, new { pagina, linhas });
+        return await conexao.QueryAsync<EmpregadoResponse>(sql, new { pagina, linhas });
     }
 }
