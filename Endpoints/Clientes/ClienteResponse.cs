@@ -1,3 +1,3 @@
 ﻿namespace WantApp.Endpoints.Clientes;
 
-public record ClienteResponse(String Id, String Nome);
+public record ClienteResponse(string Id, string Nome);

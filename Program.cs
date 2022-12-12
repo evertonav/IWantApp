@@ -13,6 +13,7 @@ using System.Text.Json;
 using WantApp.Endpoints.Categorias;
 using WantApp.Endpoints.Clientes;
 using WantApp.Endpoints.Empregados;
+using WantApp.Endpoints.Pedidos;
 using WantApp.Endpoints.Produtos;
 using WantApp.Endpoints.Seguranca;
 using WantApp.Infra.Dados;
@@ -56,6 +57,10 @@ builder.Services.AddAuthorization(opcoes =>
     opcoes.AddPolicy("Empregado005Politica", p =>
     {
         p.RequireAuthenticatedUser().RequireClaim("CodigoEmpregado", "2");
+    });
+    opcoes.AddPolicy("CPFPolitica", p =>
+    {
+        p.RequireAuthenticatedUser().RequireClaim("Cpf");
     });
 });
 
@@ -114,6 +119,7 @@ app.MapMethods(ProdutoGetPeloId.Template, ProdutoGetPeloId.Metodos, ProdutoGetPe
 app.MapMethods(ProdutoGetVitrine.Template, ProdutoGetVitrine.Metodos, ProdutoGetVitrine.Action);
 app.MapMethods(ClientesPost.Template, ClientesPost.Metodos, ClientesPost.Action);
 app.MapMethods(ClientesGet.Template, ClientesGet.Metodos, ClientesGet.Action);
+app.MapMethods(PedidoPost.Template, PedidoPost.Metodos, PedidoPost.Action);
 
 app.UseExceptionHandler("/erro");
 app.Map("/erro", (HttpContext http) => {

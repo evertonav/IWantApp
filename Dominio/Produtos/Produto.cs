@@ -1,4 +1,5 @@
 ﻿using Flunt.Validations;
+using WantApp.Dominio.Pedidos;
 
 namespace WantApp.Dominio.Produtos;
 
@@ -11,6 +12,7 @@ public class Produto : Entidade
     public Guid CategoriaId { get; set; }
     public bool Ativo { get; set; } = true;
     public decimal Preco { get; private set ; }
+    public ICollection<Pedido> Pedidos { get; internal set; }
 
     public Produto()
     {

@@ -16,15 +16,11 @@ public class ClientesGet
     public static Delegate Handle => Action;
 
     [AllowAnonymous]
-    public static async Task<IResult> Action(HttpContext http)
+    public static IResult Action(HttpContext http)
     {
-        var usuario = http.User;
-        ClienteResponse clienteResponse = new ClienteResponse()
-        {
-           // Id = usuario.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value.ToString(),
-            Nome = "Teste"
-        };                         
-
-        return Results.Ok(clienteResponse);
+        string idUsuario = http.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        string nomeUsuario = http.User.Claims.FirstOrDefault(c => c.Type == "Nome").Value;
+        
+        return Results.Ok(new ClienteResponse(idUsuario, nomeUsuario));     
     }
 }
