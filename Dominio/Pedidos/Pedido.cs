@@ -33,7 +33,7 @@ public class Pedido : Entidade
     {
         var contrato = new Contract<Pedido>()
             .IsNotNull(ClienteId, "Cliente")
-            .IsNotNull(Produtos, "Produtos")
+            .IsTrue(Produtos.Count() > 0, "Produtos")
             .IsNotNull(EnderecoEntrega, "Endereço Entrega");
 
         AddNotifications(contrato);

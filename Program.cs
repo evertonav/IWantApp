@@ -18,6 +18,7 @@ using WantApp.Endpoints.Produtos;
 using WantApp.Endpoints.Seguranca;
 using WantApp.Infra.Dados;
 using WantApp.Servicos;
+using WantApp.Servicos.Produtos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -87,6 +88,8 @@ builder.Services.AddAuthentication(x =>
 builder.Services.AddScoped<BuscarTodosUsuariosComClaimName>();
 builder.Services.AddScoped<CategoriaServico>();
 builder.Services.AddScoped<UsuarioServico>();
+builder.Services.AddScoped<PedidoServico>();
+builder.Services.AddScoped<ProdutoGetServico>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
