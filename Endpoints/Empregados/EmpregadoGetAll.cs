@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
-using WantApp.Infra.Dados;
+using WantApp.Infra.Dados.Usuarios;
 
 namespace WantApp.Endpoints.Empregados;
 
@@ -10,8 +10,8 @@ public class EmpregadoGetAll
     public static string[] Metodos => new string[] {HttpMethod.Get.ToString()};
     public static Delegate Handle => Action;
 
-    [Authorize(Policy = "Empregado005Politica")]
-    public static async Task<IResult> Action(int? pagina, int? linhas, BuscarTodosUsuariosComClaimName buscarTodosUsuariosComClaimName)
+    //[Authorize(Policy = "Empregado005Politica")]
+    public static async Task<IResult> Action(int? pagina, int? linhas, BuscarUsuariosComClaim buscarUsuariosComClaim)
     {
         List<string> erros = new List<string>();
 
@@ -25,6 +25,6 @@ public class EmpregadoGetAll
             return Results.ValidationProblem(erros.ToArray().ConverterParaProblemaDetalhado());
 
         //Utilizando o Dapper                  
-        return Results.Ok(await buscarTodosUsuariosComClaimName.Executar(pagina.Value, linhas.Value));
+        return Results.Ok(await buscarUsuariosComClaim.BuscarTodos(pagina.Value, linhas.Value));
     }
 }

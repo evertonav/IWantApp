@@ -1,3 +1,3 @@
 ﻿namespace WantApp.Endpoints.Empregados;
 
-public record EmpregadoResponse(string Email, string Nome);//, string CodigoEmpregado);
+public record EmpregadoResponse(string Email, string Nome);

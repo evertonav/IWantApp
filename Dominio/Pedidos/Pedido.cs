@@ -11,7 +11,13 @@ public class Pedido : Entidade
     public decimal Total { get; private set; }
     public string EnderecoEntrega { get; private set; }
 
-    public Pedido() { }
+    public Pedido() 
+    {
+        this.Produtos = new List<Produto>();
+        this.Total = 0;
+        this.ClienteId = "";
+        this.EnderecoEntrega = "";
+    }
 
     public Pedido (string clienteId, string clienteNome, List<Produto> produtos, string enderecoEntrega)
     {

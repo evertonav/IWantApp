@@ -2,6 +2,8 @@
 using System.Security.Claims;
 using WantApp.Endpoints.Clientes;
 using WantApp.Endpoints.Empregados;
+using WantApp.Infra.Dados;
+using WantApp.Infra.Dados.Usuarios;
 
 namespace WantApp.Servicos;
 
@@ -34,9 +36,19 @@ public class UsuarioServico
     {
         return await GerenciarUsuario.AddClaimsAsync(usuario, claims);
     }
-
-    public async Task Buscar()
+    
+    public string UsuarioLogado(HttpContext http)
     {
+        return http.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+    }
 
+    public string CodigoEmpregado(HttpContext http)
+    {
+        return http.User.Claims.FirstOrDefault(c => c.Type == "CodigoEmpregado")?.Value;
+    }
+
+    public ConsultaUsuarioPeloId CodigoEmpregado(string idCliente, IConfiguration configaracao)
+    {
+        return new BuscarUsuariosComClaim(configaracao).BuscarPeloId(idCliente, "CodigoEmpregado");
     }
 }

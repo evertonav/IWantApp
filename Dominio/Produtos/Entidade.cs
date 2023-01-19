@@ -6,7 +6,9 @@ public abstract class Entidade : Notifiable<Notification>
 {
     public Entidade()
     {
-        Id = Guid.NewGuid(); 
+        Id = Guid.NewGuid();
+        CriadoPor = "";
+        EditadoPor = "";
     }
 
     public Guid Id { get; set; }    
