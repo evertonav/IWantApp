@@ -6,6 +6,7 @@ using WantApp.Dominio.Produtos;
 using WantApp.Infra.Dados;
 using static System.Net.WebRequestMethods;
 using WantApp.Servicos;
+using WantApp.Servicos.Usuarios;
 
 namespace WantApp.Endpoints.Clientes;
 
@@ -18,9 +19,8 @@ public class ClientesGet
     [AllowAnonymous]
     public static IResult Action(HttpContext http)
     {
-        string idUsuario = http.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-        string nomeUsuario = http.User.Claims.FirstOrDefault(c => c.Type == "Nome").Value;
+        InformacoesTokenServico informacoesTokenServico = new InformacoesTokenServico(http);
         
-        return Results.Ok(new ClienteResponse(idUsuario, nomeUsuario));     
+        return Results.Ok(new ClienteResponse(informacoesTokenServico.UsuarioLogado(), informacoesTokenServico.NomeUsuario()));     
     }
 }

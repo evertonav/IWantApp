@@ -15,12 +15,15 @@ using WantApp.Endpoints.Clientes;
 using WantApp.Endpoints.Empregados;
 using WantApp.Endpoints.Pedidos;
 using WantApp.Endpoints.Produtos;
+using WantApp.Endpoints.Produtos.Relatorios;
 using WantApp.Endpoints.Seguranca;
 using WantApp.Infra.Dados;
 using WantApp.Infra.Dados.Usuarios;
 using WantApp.Servicos;
 using WantApp.Servicos.Pedidos;
 using WantApp.Servicos.Produtos;
+using WantApp.Servicos.Produtos.Relatorios;
+using WantApp.Servicos.Usuarios;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -93,6 +96,7 @@ builder.Services.AddScoped<UsuarioServico>();
 builder.Services.AddScoped<PedidoServico>();
 builder.Services.AddScoped<ProdutoGetServico>();
 builder.Services.AddScoped<PedidoGetServico>();
+builder.Services.AddScoped<RelatorioProdutosMaisVendidos>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -126,7 +130,9 @@ app.MapMethods(ProdutoGetVitrine.Template, ProdutoGetVitrine.Metodos, ProdutoGet
 app.MapMethods(ClientesPost.Template, ClientesPost.Metodos, ClientesPost.Action);
 app.MapMethods(ClientesGet.Template, ClientesGet.Metodos, ClientesGet.Action);
 app.MapMethods(PedidoPost.Template, PedidoPost.Metodos, PedidoPost.Action);
-app.MapMethods(PedidoGetPeloId.Template, PedidoGetPeloId.Metodos, PedidoGetPeloId.Action);
+//app.MapMethods(PedidoGetPeloId.Template, PedidoGetPeloId.Metodos, PedidoGetPeloId.Action);
+app.MapMethods(PedidoGet.Template, PedidoGet.Metodos, PedidoGet.Action);
+app.MapMethods(ProdutoGetMaisVendidos.Template, ProdutoGetMaisVendidos.Metodos, ProdutoGetMaisVendidos.Action);
 
 app.UseExceptionHandler("/erro");
 app.Map("/erro", (HttpContext http) => {

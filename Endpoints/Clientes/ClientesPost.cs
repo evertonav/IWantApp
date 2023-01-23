@@ -5,7 +5,7 @@ using WantApp.Endpoints.Clientes;
 using WantApp.Dominio.Produtos;
 using WantApp.Infra.Dados;
 using static System.Net.WebRequestMethods;
-using WantApp.Servicos;
+using WantApp.Servicos.Usuarios;
 
 namespace WantApp.Endpoints.Clientes;
 
@@ -18,7 +18,7 @@ public class ClientesPost
     [AllowAnonymous]
     public static async Task<IResult> Action(ClienteRequest clienteRequest, HttpContext http, UsuarioServico usuarioServico)
     {
-        var usuarioId = http.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var usuarioId = new InformacoesTokenServico(http).UsuarioLogado();
 
         List<Claim> claims = new List<Claim>()
         {

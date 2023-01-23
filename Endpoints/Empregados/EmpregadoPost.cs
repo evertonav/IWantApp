@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using WantApp.Dominio.Produtos;
 using WantApp.Infra.Dados;
-using WantApp.Servicos;
+using WantApp.Servicos.Usuarios;
 using static System.Net.WebRequestMethods;
 
 namespace WantApp.Endpoints.Empregados;

@@ -16,10 +16,10 @@ public class PedidoGetServico
 
     public PedidoResponse BuscarPeloId(Guid id)
     {
-        return _context
+        return null;/*_context
                  .Pedido
                  .Where(X => X.Id == id )
                  .Select(p => new PedidoResponse(p.Id, p.ClienteId, p.Produtos, p.Total, p.EnderecoEntrega))
-                 .FirstOrDefault();
+                 .FirstOrDefault();*/
     }
 }

@@ -3,6 +3,7 @@ using System.Security.Claims;
 using WantApp.Dominio.Produtos;
 using WantApp.Infra.Dados;
 using WantApp.Servicos;
+using WantApp.Servicos.Usuarios;
 
 namespace WantApp.Endpoints.Categorias;
 
@@ -13,13 +14,11 @@ public class CategoriaPut
     public static Delegate Handle => Action;
 
     public static IResult Action([FromRoute] Guid Id,
-        HttpContext http, CategoriaRequest categoriaRequest, CategoriaServico categoriaServico)//ApplicationDbContext context)
-    {
-        string usuarioId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-
+        HttpContext http, CategoriaRequest categoriaRequest, CategoriaServico categoriaServico)
+    {       
         Categoria categoria = categoriaServico.Atualizar(categoriaServico.BuscarPeloId(Id),
                                                          categoriaRequest,
-                                                         usuarioId);                         
+                                                         new InformacoesTokenServico(http).UsuarioLogado());                         
 
         if (categoria == null)
         {

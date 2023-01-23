@@ -3,18 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using WantApp.Dominio.Pedidos;
 using WantApp.Infra.Dados;
-using WantApp.Servicos;
 using WantApp.Servicos.Pedidos;
+using WantApp.Servicos.Usuarios;
 using static System.Net.WebRequestMethods;
 
 namespace WantApp.Endpoints.Pedidos;
 
-public class PedidoGetPeloId
+public class PedidoGetPeloIdMinha
 {
     public static string Template => "/pedidos/{id:Guid}";
     public static string[] Metodos => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
 
+    //Essa classe é o desafio 1 do curso, solução feita por mim.
     [Authorize]
     public static async Task<IResult> Action([FromRoute] Guid Id, HttpContext http, PedidoGetServico pedidoGetServico, 
         UsuarioServico usuarioServico, IConfiguration configuracao)
@@ -26,11 +27,11 @@ public class PedidoGetPeloId
         if (pedidoResponse == null)        
             erros.Add("Não há pedidos com esse id!");
 
-        if (pedidoResponse != null && (pedidoResponse.ClienteId != usuarioServico.UsuarioLogado(http)))        
+        /* if (pedidoResponse != null && (pedidoResponse.ClienteId != usuarioServico.UsuarioLogado(http)))        
         {
             if (usuarioServico.CodigoEmpregado(http) != usuarioServico.CodigoEmpregado(pedidoResponse.ClienteId, configuracao).Valor)
                 erros.Add("O usuário logado não pode visualizar esse pedido!");          
-        }           
+        } */          
 
         if (erros.Count > 0)
             return Results.ValidationProblem(erros.ToArray().ConverterParaProblemaDetalhado());
