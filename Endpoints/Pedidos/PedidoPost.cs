@@ -6,6 +6,7 @@ using WantApp.Endpoints.Clientes;
 using WantApp.Infra.Dados;
 using WantApp.Dominio.Pedidos;
 using WantApp.Servicos.Pedidos;
+using WantApp.Servicos.Usuarios;
 
 namespace WantApp.Endpoints.Pedidos;
 
@@ -18,10 +19,11 @@ public class PedidoPost
     [Authorize(Policy = "CPFPolitica")]
     public static async Task<IResult> Action(PedidoRequest pedidoRequest, HttpContext http, PedidoServico pedidoServico)
     {
-        var idCliente = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-        var nomeCliente = http.User.Claims.First(c => c.Type == "Nome").Value;
+        InformacoesTokenServico informacoesTokenServico = new InformacoesTokenServico(http);        
 
-        Pedido pedido = await pedidoServico.AdicionarAsync(idCliente, nomeCliente, pedidoRequest);        
+        Pedido pedido = await pedidoServico.AdicionarAsync(informacoesTokenServico.UsuarioLogado(),
+                                                           informacoesTokenServico.NomeUsuario(), 
+                                                           pedidoRequest);        
 
         if (!pedido.IsValid)
             return Results.ValidationProblem(pedido.Notifications.ConverterParaProblemaDetalhado());        

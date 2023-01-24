@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using WantApp.Dominio.Produtos;
 using WantApp.Infra.Dados;
+using WantApp.Servicos.Usuarios;
 using static System.Net.WebRequestMethods;
 
 namespace WantApp.Endpoints.Produtos;
@@ -17,8 +18,7 @@ public class ProdutoPost
     [Authorize(Policy = "EmpregadoPolitica")]
     public static async Task<IResult> Action(ProdutoRequest produtoRequest, 
         HttpContext http, ApplicationDbContext context)
-    {
-        var idUsuario = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+    {        
         var categoria = await context.Categorias.FirstOrDefaultAsync(c => c.Id == produtoRequest.CategoriaId);
 
         var produto = new Produto(produtoRequest.Nome,
@@ -27,7 +27,7 @@ public class ProdutoPost
                                   produtoRequest.TemEstoque,
                                   produtoRequest.preco,
                                   produtoRequest.Ativo,
-                                  idUsuario);
+                                  new InformacoesTokenServico(http).UsuarioLogado());
 
         if (!produto.IsValid)
         {

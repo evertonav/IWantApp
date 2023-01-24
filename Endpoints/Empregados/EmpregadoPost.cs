@@ -16,7 +16,7 @@ public class EmpregadoPost
     public static async Task<IResult> Action(EmpregadoRequest empregadoRequest, 
         HttpContext http, UsuarioServico usuarioServico)//, UserManager<IdentityUser> userManager)
     {       
-        var usuarioId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        var usuarioId = new InformacoesTokenServico(http).UsuarioLogado();
 
         List<Claim> claims = new List<Claim>()
         {
