@@ -12,7 +12,7 @@ A API utiliza OAuth2 como forma de autenticação/autorização.
 
 ## Solicitar token Acesso
 
-Para solicitar o token de acesso você deve colocar [/token] utilizando o método `POST`.
+Para solicitar o token de acesso você deve colocar [/token] utilizando o método `POST`. Uma dica, antes faça a criação de um cliente pelo [/Clientes] e utilize-o para buscar o token.
 
 #### Dados para envio no POST
 | Parâmetro | Descrição |
@@ -82,4 +82,76 @@ Para solicitar o token de acesso você deve colocar [/token] utilizando o métod
          }
          
          
-### Novo Empregado [POST]        
+### Novo Empregado [POST]  
+
++ Atributos (Objeto)
+    + Email (string, obrigatório) - E-mail do empregado.
+    + Senha (int, obrigatório) - Senha que o empregado irá usar para acessar os recursos.            
+    + Nome (string, opcional) - Nome do empregado.
+    + CodigoEmpregado (string, opcional) - Código que o empregado irá utilizar.
+    
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer [token]    
+
+    + Body
+    
+              { 
+                    "Email": "testaralteracao1212@gmail.com",
+                    "Senha": "123456",
+                    "Nome": "",
+                    "CodigoEmpregado": ""
+              }    
+    
++ Response 201 (application/json)
+
+    + Body
+            
+            "02a152d7-96a6-4e1a-a8d1-388c1be5db63"
+    
+## Clientes [/clientes]
+
+### Buscar Cliente [GET /clientes]
+
+Com este recurso podemos resgatar os dados do usuário utilizado no token utilizado.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer [token]  
+
++ Response 200 (application/json)
+
+          {
+               "id": "22c42772-0e0e-47c8-9b4e-055bf36764ee",
+               "nome": "Everton"
+          }
+
+
+### Novo Cliente [POST]  
+
++ Atributos (Objeto)
+    + Email (string, obrigatório) - E-mail do empregado.
+    + Senha (int, obrigatório) - Senha que o empregado irá usar para acessar os recursos.            
+    + Nome (string, opcional) - Nome do empregado.
+    + CPF (string, opcional) - CPF do cliente.
+    
++ Request (application/json)    
+
+    + Body
+    
+              { 
+                    "Email": "Testar@gmail.com",
+                    "Senha": "123456",
+                    "Nome": "Teste",
+                    "CPF": "12345678912"
+              }    
+    
++ Response 201 (application/json)
+
+     + Body
+            
+            "08c9d89c-6e5d-4ff5-92aa-c445e71402dc"
