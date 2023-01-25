@@ -23,7 +23,7 @@ Para solicitar o token de acesso você deve colocar [/token] utilizando o métod
 
 + Request (application/json)
 
-    + Body
++ Body
 
             {
               "email": "testeAssincrono@gmail.com"
@@ -40,4 +40,46 @@ Para solicitar o token de acesso você deve colocar [/token] utilizando o métod
 
 # Recursos
 
+## Empregados [/empregados]
 
+### Buscar todos empregados [GET /empregados{?pagina,linhas}]
+
++ Parameters
+    + pagina (int, obrigatório) - Definir qual página deseja visualizar.
+    + linhas (int, obrigatório) - Definir quantas linhas deseja visualizar.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer [token]
+
++ Response 200 (application/json)
+
+          [
+              { 
+                    "email": "evertonricardo1@gmail.com",
+                    "nome": "Everton"
+              },
+              {
+                    "email": "julia@gmail.com",
+                    "nome": "julia"
+              }               
+          ]
+
++ Response 400 (application/json)
+
+         {
+             "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+             "title": "One or more validation errors occurred.",
+             "status": 400,
+             "errors": {
+                 "Error": [
+                     "Você precisa preencher o parâmetro 'pagina'!",
+                     "Você precisa preencher o parâmetro 'linhas'!"
+                 ]
+             }
+         }
+         
+         
+### Novo Empregado [POST]        
