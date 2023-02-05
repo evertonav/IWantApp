@@ -155,3 +155,141 @@ Com este recurso podemos resgatar os dados do usuário utilizado no token utiliz
      + Body
             
             "08c9d89c-6e5d-4ff5-92aa-c445e71402dc"
+
+## Categorias [/categorias]
+
+### Buscar todas categorias [GET /categorias]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer [token]  
+
++ Response 200 (application/json)
+
+          [
+                {
+                    "id": "9685108c-6b20-4ea4-ae3f-e4159dfcdb3a",
+                    "nome": "Teste",
+                    "ativo": true
+                }
+          ]
+          
+### Nova categoria [POST]  
+
++ Atributos (Objeto)
+    + Nome (string, obrigatório) - Nome da categoria.
+    + Ativo (boolean, opcional) - Se a categoria deve estar ativa ou não.                
+    
++ Request (application/json)    
+
+    + Body
+    
+              {
+	            "Nome": "Teste",
+	            "Ativo": true
+              }           
+    
++ Response 201 (application/json)
+
+     + Body
+            
+            "04a8fea9-9e49-49aa-8350-eb4d2cd84462"          
+            
+### Editar categoria [PUT /categorias/{id}]            
+
++ Parameters
+    + id (Guid, obrigatório) - Id da categoria.    
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer [token]
+
+    + Body
+    
+              {
+                        "Ativo": true,
+                        "Nome": "Teste"
+              }   
+
++ Response 200 (application/json)
+
+## Produtos [/produtos]
+
+### Buscar todos produtos [GET /produtos]
+
+Este recurso tem uma política de authorização onde apenas quem é empregado pode visualizar, isto é, ao gerar o TOKEN utilize um usuário que é um empregado.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer [token] 
+            
++ Response 200 (application/json)
+
+            [
+                {
+                    "id": "031c8030-81a7-4049-88b8-4d4f86c3e357",
+                    "nome": "Extrato de Tomate",
+                    "categoriaNome": "Extrato",
+                    "descricao": "Extrato de Tomate",
+                    "temEstoque": true,
+                    "preco": 1.60,
+                    "ativo": true
+                }            
+            ]                
+            
+### Buscar um produto especiífico  [GET /produtos/{Id}]          
+
+Este recurso tem uma política de authorização onde apenas quem é empregado pode visualizar, isto é, ao gerar o TOKEN utilize um usuário que é um empregado.
+
++ Atributos (Objeto)
+    + Id (Guid, obrigatório) - Id do produto.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer [token] 
+            
++ Response 200 (application/json)
+
+            {
+                   "id": "eaf3a8ad-e2dc-40ae-9356-fecac3d1f05b",
+                   "nome": "Laranja",
+                   "categoriaNome": "TesteServico",
+                   "descricao": "Laranja",
+                   "temEstoque": true,
+                   "preco": 3.00,
+                   "ativo": true
+            } 
+            
+### Vitrine de produtos [GET /produtos/vitrine{?pagina,linhas,ordenarPor}]
+
+Este recurso tem o objetivo de listar os produtos que tem estoque, e onde a categoria encontra-se ativa.
+
++ Atributos (Objeto)
+    + pagina (int, obrigatório) - A página que deseja visualizar.
+    + linhas (int, obrigatório) - Quantidade de linhas que deseja visualizar.
+    + ordenarPor (string, opcional) - Que ordenação deseja utilizar, tem duas opções: "Nome" e "Preco". O default é Nome.    
+
++ Response 200 (application/json)
+
+            [
+                {
+                    "id": "031c8030-81a7-4049-88b8-4d4f86c3e357",
+                    "nome": "Extrato de Tomate",
+                    "categoriaNome": "Extrato",
+                    "descricao": "Extrato de Tomate",
+                    "temEstoque": true,
+                    "preco": 1.60,
+                    "ativo": true
+                }
+            ]
+            
+### Novo produto [POST /produtos]            
+
