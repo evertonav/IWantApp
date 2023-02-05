@@ -293,3 +293,57 @@ Este recurso tem o objetivo de listar os produtos que tem estoque, e onde a cate
             
 ### Novo produto [POST /produtos]            
 
++ Atributos (Objeto)
+    + Nome (string, obrigatório) - Nome do produto.
+    + CategoriaId (Guid, obrigatório) - Id de uma categória existente.                
+    + Descricao (string, obrigatório) - Descrição do produto.
+    + TemEstoque (boolean, opcional) - Define se o produto tem estoque ou não.
+    + Preço (decimal, obrigatório) - O preço do produto.
+    + Ativo (boolean, opcional) - Define se o produto está ativo.
+    
++ Request (application/json)   
+
+    + Headers
+
+            Authorization: Bearer [token] 
+
+    + Body
+    
+              {
+		  "Nome": "Sorvete",
+		  "CategoriaId": "a04be7b1-b620-4d3c-a866-acd20718efde",
+		  "Descricao": "Sorvete de passas",
+		  "TemEstoque": true,
+		  "Preco": 3.1,
+		  "Ativo": true
+	      }         
+    
++ Response 201 (application/json)
+
+     + Body
+            
+            "d830f75a-a3a3-411a-9300-32d3f7f02d99"   
+	    
+### Relatório produtos mais vendidos [POST /produtos/relatorio/maisVendidos{?pagina, linhas}]     
+
++ Atributos (Objeto)
+    + pagina (int, obrigatório) - A página que deseja visualizar.
+    + linhas (int, obrigatório) - Quantidade de linhas que deseja visualizar.
+    
++ Request (application/json)   
+
+    + Headers
+
+            Authorization: Bearer [token]        
+    
++ Response 201 (application/json)
+
+     + Body
+            
+            [
+		    {
+			"id": "031c8030-81a7-4049-88b8-4d4f86c3e357",
+			"nome": "Extrato de Tomate",
+			"quantidade": 1
+		    }
+	    ]
