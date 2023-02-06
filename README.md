@@ -389,20 +389,6 @@ Neste recurso tem uma regra específica, onde apenas os clientes conseguem visua
             Authorization: Bearer [token]
 
 + Response 200 (application/json)
-
-     + Body
-	
-		{
-		    "id": "031c8030-81a7-4049-88b8-4d4f86c3e357",
-		    "nome": "Extrato de Tomate"
-		},
-		{
-		    "id": "eaf3a8ad-e2dc-40ae-9356-fecac3d1f05b",
-		    "nome": "Laranja"
-		}
-	    ],
-	    "enderecoEntrega": "cefer 2, na baixada"
-       }
 	    
     + Body
     
