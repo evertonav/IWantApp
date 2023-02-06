@@ -336,7 +336,7 @@ Este recurso tem o objetivo de listar os produtos que tem estoque, e onde a cate
 
             Authorization: Bearer [token]        
     
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
      + Body
 
@@ -347,3 +347,77 @@ Este recurso tem o objetivo de listar os produtos que tem estoque, e onde a cate
                     "quantidade": 1
                 }
             ]                       
+
+## Pedidos [/pedidos]
+
+### Novo Pedido [POST /pedidos]
+
+Neste recurso tem uma regra específica, onde apenas os clientes conseguem visualizar os pedidos, isto é, apenas os token que são referente a clientes.
+
++ Atributos (Objeto)
+    + ProdutosIds (Array[Guid], obrigatório) - São uma lista de Ids de produtos que foram cadastrados no sistema.
+    + EnderecoEntrega (string, obrigatório) - O endereço onde vão ser entregues os produtos listados.
+
++ Request (application/json)   
+
+    + Headers
+
+            Authorization: Bearer [token]
+	    
+    + Body
+    
+            {                   
+                   "ProdutosIds": ["eaf3a8ad-e2dc-40ae-9356-fecac3d1f05b", "031c8030-81a7-4049-88b8-4d4f86c3e357"],
+                   "EnderecoEntrega": "Rua 1, teste"
+            }
+
++ Response 201 (application/json)
+
+     + Body
+	
+	f7ec6162-b3b2-4b6f-8b1b-44f91f27db6e
+	    	    
+### Buscar um Pedido [POST /pedidos/{Id}]
+
++ Atributos (Objeto)
+    + Id (Guid, obrigatório) - Id do pedido.
+
++ Request (application/json)   
+
+    + Headers
+
+            Authorization: Bearer [token]
+
++ Response 200 (application/json)
+
+     + Body
+	
+		{
+		    "id": "031c8030-81a7-4049-88b8-4d4f86c3e357",
+		    "nome": "Extrato de Tomate"
+		},
+		{
+		    "id": "eaf3a8ad-e2dc-40ae-9356-fecac3d1f05b",
+		    "nome": "Laranja"
+		}
+	    ],
+	    "enderecoEntrega": "cefer 2, na baixada"
+       }
+	    
+    + Body
+    
+            {                   
+                   "id": "f7ec6162-b3b2-4b6f-8b1b-44f91f27db6e",
+                   "emailCliente": "TesteClientes1",
+		   	 "produtos": [
+					{
+					    "id": "031c8030-81a7-4049-88b8-4d4f86c3e357",
+					    "nome": "Extrato de Tomate"
+					},
+					{
+					    "id": "eaf3a8ad-e2dc-40ae-9356-fecac3d1f05b",
+					    "nome": "Laranja"
+					}
+	    	  	 ],
+		   	"enderecoEntrega": "tESTE"
+            }	   
