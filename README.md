@@ -309,14 +309,14 @@ Este recurso tem o objetivo de listar os produtos que tem estoque, e onde a cate
 
     + Body
     
-              {
-		  "Nome": "Sorvete",
-		  "CategoriaId": "a04be7b1-b620-4d3c-a866-acd20718efde",
-		  "Descricao": "Sorvete de passas",
-		  "TemEstoque": true,
-		  "Preco": 3.1,
-		  "Ativo": true
-	      }         
+            {                   
+                   "Nome": "Laranja",
+                   "CategoriaId": "a04be7b1-b620-4d3c-a866-acd20718efde",
+                   "Descricao": "Laranja",
+                   "TemEstoque": true,
+                   "Preco": 3.00,
+                   "Ativo": true
+            }            
     
 + Response 201 (application/json)
 
@@ -339,11 +339,11 @@ Este recurso tem o objetivo de listar os produtos que tem estoque, e onde a cate
 + Response 201 (application/json)
 
      + Body
-            
+
             [
-		    {
-			"id": "031c8030-81a7-4049-88b8-4d4f86c3e357",
-			"nome": "Extrato de Tomate",
-			"quantidade": 1
-		    }
-	    ]
+                {
+                    "id": "031c8030-81a7-4049-88b8-4d4f86c3e357",
+                    "nome": "Extrato de Tomate",
+                    "quantidade": 1
+                }
+            ]                       
